@@ -10,16 +10,14 @@ import pyjokes
 import pywhatkit
 from email.message import EmailMessage
 
-engine = pyttsx3.init('sapi5')
+engine = pyttsx3.init()
 voices = engine.getProperty('voices')
 engine.setProperty('voice', voices[1].id)
-emaillist = {'personal': "ankitdsouza15@gmail.com",
-             'college': "co2019.hiten.dusseja@ves.ac.in",
-             'alternate': "xyzabc13318990@gmail.com",
-             'prank': "prenkmaster1331@gmail.com"}
-
+emaillist = dict()
 
 def speak(sentence):
+    print('speak is disable for now')
+    return
     engine.say(sentence)
     engine.runAndWait()
 
@@ -30,15 +28,15 @@ def sendemail(to, content):
     server.starttls()
     file = open("password.txt", 'r')
     password = file.read()
-    server.login('ankitdsouza15@gmail.com', password)
-    # server.sendmail('ankitdsouza15@gmail.com', to, content)
+    server.login(None, password)
+    # server.sendmail(None, to, content)
     server.send_message(content)
     server.close()
     speak(f"Sent an email to {to} ")
 
 
 def greetme():
-    speak("Hello there This is Ashley,how can I help you?")
+    speak("Hello there This is your assistant,how can I help you?")
 
 
 def takeCommand():
@@ -54,11 +52,11 @@ def takeCommand():
         query = r.recognize_google(audio)
         print(f"You said: {query}")
         query = query.lower()
-        if 'exit ashley' in query:
-            speak("Exiting Ashley")
+        if 'exit your assistant' in query:
+            speak("Exiting your assistant")
             exit()
         else:
-            query = query.replace("ashley", "")
+            query = query.replace("your assistant", "")
 
     except Exception as e:
         print("Couldn't recognize that, can you please repeat")
@@ -88,7 +86,7 @@ if __name__ == "__main__":
                 print("Couldn't find that")
 
         elif 'open browser' in query:
-            browserpath = "C:\\Program Files (x86)\\Google\\Chrome\\Application\\chrome.exe"
+            browserpath = None
             speak("opening chrome")
             print("Opening chrome..")
             os.startfile(browserpath)
@@ -121,7 +119,7 @@ if __name__ == "__main__":
             if 'play music' in query:
                 print("Playing music...")
                 speak("Playing music")
-                music_dir = "C:\\Users\\Komal\\Desktop\\Music"
+                music_dir = None
                 songslist = os.listdir(music_dir)
                 songlistlen = len(songslist) - 1
                 r = random.randint(0, songlistlen)
@@ -130,7 +128,7 @@ if __name__ == "__main__":
             elif 'play songs' in query:
                 print("Playing music...")
                 speak("playing music")
-                music_dir = "C:\\Users\\Komal\\Desktop\\Music"
+                music_dir = None 
                 songslist = os.listdir(music_dir)
                 songlistlen = len(songslist) - 1
                 r = random.randint(0, songlistlen)
@@ -148,7 +146,7 @@ if __name__ == "__main__":
             print(f"The current time is {crnttime}")
 
         elif 'open torrent' in query:
-            tpath = "C:\\Users\\Komal\\AppData\\Roaming\\uTorrent\\uTorrent.exe"
+            tpath = None 
             speak("Opening torrent")
             os.startfile(tpath)
 
@@ -156,14 +154,14 @@ if __name__ == "__main__":
             try:
                 speak("What should I put in the body of the mail?")
                 content = takeCommand()
-                to = "xyzabc13318990@gmail.com"
+                to = None
                 sendemail(to, content)
             except Exception as e:
                 print(e)
 
         elif 'what is your story' in query:
             speak("My story according to netflix is")
-            webbrowser.open('https://www.netflix.com/watch/80195725?trackId=13752289&tctx=0%2C0%2C10cfe65003831352e9371ba67aac21e615b4fe36%3A8180260fbe5bf0dbc41472be37e73fc0f69def26%2C10cfe65003831352e9371ba67aac21e615b4fe36%3A8180260fbe5bf0dbc41472be37e73fc0f69def26%2C%2C')
+            webbrowser.open('')
 
         elif 'send email' in query:
             try:
@@ -185,7 +183,7 @@ if __name__ == "__main__":
 
                     # to set the recipient
                     query = 'none'
-                    content['From'] = "ankitdsouza15@gmail.com"
+                    content['From'] = None
                     while query == 'none':
                         speak("Who should be the recipient?")
                         rec = takeCommand().lower()
@@ -231,7 +229,7 @@ if __name__ == "__main__":
 
                 # to set the recipient
                 query = 'none'
-                content['From'] = "ankitdsouza15@gmail.com"
+                content['From'] = None
                 while query == 'none':
                     speak("Who should be the recipient?")
                     rec = takeCommand().lower()
