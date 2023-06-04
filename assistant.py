@@ -9,15 +9,33 @@ import smtplib
 import pyjokes
 import pywhatkit
 from email.message import EmailMessage
+from plyer import notification  
+from pynput.keyboard import Key,Controller
 
 engine = pyttsx3.init()
-voices = engine.getProperty('voices')
-engine.setProperty('voice', voices[1].id)
+#voices = engine.getProperty('voices')
+#engine.setProperty('voice', voices[1].id)
+engine.setProperty('rate', 120) # speed wp/m
 emaillist = dict()
 
+keyboard = Controller()
+
+
+def notify(msg):
+    return 
+    notification_title = 'Your Voice Assistant'  
+    notification_message = msg
+      
+    notification.notify(  
+        title = notification_title,  
+        message = notification_message,  
+        app_icon = None,  
+        timeout = 10,  
+        toast = False  
+        )  
+
+
 def speak(sentence):
-    print('speak is disable for now')
-    return
     engine.say(sentence)
     engine.runAndWait()
 
@@ -36,7 +54,7 @@ def sendemail(to, content):
 
 
 def greetme():
-    speak("Hello there This is your assistant,how can I help you?")
+    speak("How can I help you?")
 
 
 def takeCommand():
@@ -52,15 +70,15 @@ def takeCommand():
         query = r.recognize_google(audio)
         print(f"You said: {query}")
         query = query.lower()
-        if 'exit your assistant' in query:
-            speak("Exiting your assistant")
+        if 'exit' in query:
+            speak("Bye!")
             exit()
         else:
             query = query.replace("your assistant", "")
 
     except Exception as e:
         print("Couldn't recognize that, can you please repeat")
-        speak("Couldn't recognize that, can you please repeat")
+        #speak("Couldn't recognize that, can you please repeat")
         return "none"
     return query
 
@@ -69,7 +87,7 @@ if __name__ == "__main__":
     greetme()
     while True:
         query = takeCommand().lower()
-
+    
         if 'wikipedia' in query:
             try:
                 print("Searching....wait")
@@ -246,7 +264,14 @@ if __name__ == "__main__":
 
             except Exception as e:
                 print(e)
-
+        elif 'page' in query:
+            if 'down' in query:
+                keyboard.press(Key.page_down)
+                keyboard.release(Key.page_down)
+            if 'up' in query:
+                keyboard.press(Key.page_up)
+                keyboard.release(Key.page_up)
+            
         else:
             if query != 'none':
                 speak("I am not able to do that, sorry!")
